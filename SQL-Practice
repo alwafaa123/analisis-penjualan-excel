@@ -1,0 +1,548 @@
+-- mengambi penjualan jakarta saja
+SELECT *
+FROM penjualan
+WHERE kota = 'Jakarta';
+
+-- mengambil hanya kolom produk dan kota 
+SELECT produk, kota
+FROM penjualan;
+
+-- menmpilkan hanya kolom produk dari tabel penjualan
+SELECT produk
+FROM penjualan;
+
+-- menampilkan produk yang dijual di Jakarta saja
+SELECT produk
+FROM penjualan
+WHERE kota = 'Jakarta';
+
+-- menampilkan semua data penjualan dengan jumlah lebih dari 2
+SELECT *
+FROM penjualan
+WHERE jumlah > 2;
+
+-- menampilkan semua data penjualan dari kota Bandung
+SELECT *
+FROM penjualan
+WHERE kota = 'Bandung';
+
+-- menampilkan semua data penjualan produk Laptop
+SELECT *
+FROM penjualan
+WHERE produk = 'Laptop';
+
+-- menampilkan semua data dengan jumlah >= 3
+SELECT *
+FROM penjualan
+WHERE jumlah >= 3;
+
+-- mengHitung total jumlah barang yang terjual (pakai SUM)
+SELECT SUM(jumlah)
+FROM penjualan;
+
+-- mengHitung rata-rata harga produk (AVG)
+SELECT AVG(harga)
+FROM penjualan;
+
+-- mengHitung berapa jumlah transaksi yang terjadi (pakai COUNT)
+SELECT COUNT(*)
+FROM penjualan;
+
+-- mengHitung total jumlah barang terjual per kota
+SELECT kota, SUM(jumlah)
+FROM penjualan
+GROUP BY kota;
+
+-- mengHitung total jumlah barang terjual per produk
+SELECT produk, SUM(jumlah) AS total_terjual
+FROM penjualan
+GROUP BY produk;
+
+-- mengHitung total barang terjual per kota hanya untuk produk Laptop
+SELECT kota, SUM(jumlah)
+FROM penjualan
+WHERE produk = 'Laptop'
+GROUP BY kota;
+
+-- Kota mana yang total penjualannya paling besar?
+SELECT kota
+FROM penjualan
+ORDER BY total_penjualan DESC;
+
+-- Menampilkan total penjualan tiap kota lalu urutkan dari terbesar
+SELECT kota, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY kota
+ORDER BY total_penjualan DESC;
+
+👉 Menampilkan total penjualan tiap produk
+👉 Urutkan dari yang paling kecil ke besar
+SELECT produk, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY produk
+ORDER BY total_penjualan ASC;
+
+👉 Tampilkan jumlah transaksi tiap kota
+👉 Urutkan dari terbanyak ke tersedikit
+SELECT kota, COUNT(*) AS jumlah_transaksi
+FROM penjualan
+GROUP BY kota
+ORDER BY jumlah_transaksi DESC;
+
+👉 tampilkan kota yang total penjualannya > 4 juta
+SELECT kota, COUNT(*) AS jumlah_transaksi
+FROM penjualan
+GROUP BY kota
+HAVING COUNT(*) > 2;
+
+👉 Produk dengan penjualan > 3 juta, urut terbesar
+SELECT produk, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY produk
+HAVING SUM(total) > 3000000
+ORDER BY total_penjualan DESC;
+
+👉 Menampilkan kota yang total penjualannya lebih dari 7 juta
+SELECT kota, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY kota
+HAVING SUM(total) > 7000000;
+
+Tambahkan urutan dari terbesar:
+SELECT kota, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY kota
+HAVING SUM(total) > 7000000
+ORDER BY total_penjualan DESC;
+
+👉 Tampilkan total penjualan tiap kota
+SELECT kota, SUM(total) AS total_penjualan
+FROM penjualan
+WHERE produk = 'Laptop'
+GROUP BY kota
+HAVING SUM(total) > 7000000;
+
+👉 Kota dengan jumlah transaksi Laptop ≥ 2, urut terbanyak
+SELECT kota, COUNT(*) AS jumlah_transaksi
+FROM penjualan
+WHERE produk = 'Laptop'
+GROUP BY kota
+HAVING COUNT(*) >= 2
+ORDER BY jumlah_transaksi DESC;
+
+👉 Tampilkan total penjualan tiap produk
+Syarat:
+
+hanya kota Bandung
+total penjualan produk > 3 juta
+urut terbesar ke kecil
+
+SELECT produk, SUM(total) AS total_penjualan
+FROM penjualan
+WHERE kota = 'Bandung'
+GROUP BY produk
+HAVING SUM(total) > 3000000
+ORDER BY total_penjualan DESC;
+
+-- JOIN = menggabungkan 2 tabel berdasarkan kolom yang berhubungan
+SELECT penjualan.kota, produk.nama_produk, penjualan.jumlah
+FROM penjualan
+INNER JOIN produk
+ON penjualan.id_produk = produk.id_produk;
+
+👉 Ini disebut relasi antar tabel
+
+🔍 Hasilnya jadi keren
+kota	nama_produk	jumlah
+Jakarta	Laptop	2
+Bandung	Mouse	5
+Bandung	Laptop	1
+
+Sekarang sudah ada nama produk 🎉
+
+SELECT produk.nama_produk, SUM(penjualan.jumlah) AS total_terjual
+FROM penjualan
+JOIN produk
+ON penjualan.id_produk = produk.id_produk
+GROUP BY produk.nama_produk;
+
+👉 Total barang terjual per produk
+TAPI hanya untuk kota Bandung
+SELECT produk.nama_produk, SUM(penjualan.jumlah) AS total_terjual
+FROM penjualan
+JOIN produk
+ON penjualan.id_produk = produk.id_produk
+WHERE penjualan.kota = 'Bandung'
+GROUP BY produk.nama_produk;
+
+🔥 LEFT JOIN
+
+Kalau tadi INNER JOIN hanya menampilkan data yang punya pasangan di kedua tabel.
+
+👉 LEFT JOIN menampilkan SEMUA data dari tabel kiri, walaupun tidak punya pasangan di tabel kanan.
+
+SELECT produk.nama_produk, penjualan.jumlah
+FROM produk
+LEFT JOIN penjualan
+ON produk.id_produk = penjualan.id_produk;
+
+👉 Tampilkan semua produk + total yang terjual
+SELECT produk.nama_produk, SUM(penjualan.jumlah) AS total_terjual
+FROM produk
+LEFT JOIN penjualan
+ON produk.id_produk = penjualan.id_produk
+GROUP BY produk.nama_produk;
+
+Query kamu menampilkan:
+👉 semua produk + total terjual (termasuk yang 0)
+
+Padahal soal tadi:
+👉 tampilkan produk yang BELUM PERNAH TERJUAL saja
+
+SELECT produk.nama_produk
+FROM produk
+LEFT JOIN penjualan
+ON produk.id_produk = penjualan.id_produk
+WHERE penjualan.id_produk IS NULL;
+
+🔥 Apa itu SUBQUERY?
+
+SUBQUERY = query kecil di dalam query utama
+
+Biasanya dipakai untuk:
+mencari nilai rata-rata
+mencari nilai tertinggi
+membandingkan data dengan hasil perhitungan
+
+SELECT 
+    produk,
+    SUM(total) AS total_produk,
+    (SELECT AVG(total) FROM penjualan) AS rata_semua
+FROM penjualan
+GROUP BY produk;
+
+menampilkan produk yang total penjualannya di atas rata-rata semua produk
+SELECT produk, SUM(total) AS total_produk
+FROM penjualan
+GROUP BY produk
+HAVING SUM(total) > (
+    SELECT AVG(total_produk)
+    FROM (
+        SELECT SUM(total) AS total_produk
+        FROM penjualan
+        GROUP BY produk
+    ) AS sub
+);
+
+
+👉 Tampilkan transaksi dengan jumlah barang
+lebih besar dari rata-rata jumlah barang
+
+SELECT *
+FROM penjualan
+WHERE jumlah > (
+    SELECT AVG(jumlah)
+    FROM penjualan
+);
+
+Tampilkan semua transaksi dari kota yang pernah membeli Laptop
+1.  SELECT kota
+FROM penjualan
+WHERE produk = 'Laptop';
+2.  SELECT nama_produk
+FROM produk
+WHERE id_produk NOT IN (
+    SELECT id_produk
+    FROM penjualan
+    WHERE kota = 'Bandung'
+);
+
+Tampilkan transaksi dari kota yang total penjualannya > 5 juta
+1.  SELECT kota
+FROM penjualan
+GROUP BY kota
+HAVING SUM(total) > 5000000;
+2.  SELECT *
+FROM penjualan
+WHERE kota IN (
+    SELECT kota
+    FROM penjualan
+    GROUP BY kota
+    HAVING SUM(total) > 5000000
+);
+
+👉 Tampilkan semua transaksi dari produk yang pernah terjual lebih dari 3 kali
+
+SELECT *
+FROM penjualan
+WHERE produk IN (
+    SELECT produk
+    FROM penjualan
+    GROUP BY produk
+    HAVING COUNT(*) > 3
+);
+
+👉 Kota yang pernah membeli Laptop
+SELECT *
+FROM penjualan
+WHERE kota IN (
+    SELECT kota
+    FROM penjualan
+    WHERE produk = 'Laptop'
+);
+
+👉 Tampilkan produk yang pernah terjual
+SELECT *
+FROM produk p
+WHERE EXISTS (
+    SELECT 1
+    FROM penjualan j
+    WHERE j.id_produk = p.id_produk
+);
+
+👉 Tampilkan kota yang pernah melakukan transaksi
+SELECT *
+FROM kota k
+WHERE EXISTS (
+    SELECT 1
+    FROM penjualan p
+    WHERE p.kota = k.kota
+);
+
+🔥 Apa itu WINDOW FUNCTION?
+Window function = fungsi yang menghitung tanpa menghilangkan baris asli.
+
+Memberi nomor urut setiap baris.
+SELECT kota, produk, total,
+ROW_NUMBER() OVER() AS nomor_urut
+FROM penjualan;
+
+👉 Nomor urut di setiap kota
+SELECT kota, produk, total,
+ROW_NUMBER() OVER(PARTITION BY kota) AS urut_per_kota
+FROM penjualan;
+
+👉 Ranking penjualan tertinggi
+SELECT kota, produk, total,
+RANK() OVER(ORDER BY total DESC) AS ranking
+FROM penjualan;
+
+Mirip RANK tapi tidak lompat nomor.
+SELECT kota, produk, total,
+DENSE_RANK() OVER(ORDER BY total DESC) AS ranking
+FROM penjualan;
+
+👉 Ranking produk terlaris di setiap kota
+SELECT kota, produk, total,
+RANK() OVER(PARTITION BY kota ORDER BY total DESC) AS rank_kota
+FROM penjualan;
+
+👉 Total penjualan berjalan per kota
+SELECT kota, produk, total,
+SUM(total) OVER(PARTITION BY kota ORDER BY total) AS running_total
+FROM penjualan;
+
+👉 Ranking produk berdasarkan total penjualan tertinggi
+SELECT 
+    produk,
+    SUM(total) AS total_penjualan,
+    DENSE_RANK() OVER(ORDER BY SUM(total) DESC) AS ranking
+FROM penjualan
+GROUP BY produk;
+
+menampilkan top kota
+SELECT *
+FROM (
+    SELECT kota, produk, total,
+    ROW_NUMBER() OVER(PARTITION BY kota ORDER BY total DESC) AS ranking
+    FROM penjualan
+) AS sub
+WHERE ranking = 1;
+
+👉 Top 2 produk terlaris secara keseluruhan (bukan per kota)
+SELECT produk, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY produk
+ORDER BY total_penjualan DESC
+LIMIT 2;
+
+🔥 Apa itu CTE (WITH)?
+CTE = membuat tabel sementara di dalam query.
+WITH total_produk AS (
+    SELECT produk, SUM(total) AS total_penjualan
+    FROM penjualan
+    GROUP BY produk
+)
+SELECT *,
+RANK() OVER(ORDER BY total_penjualan DESC) AS ranking
+FROM total_produk;
+
+👉 Tampilkan produk dengan total penjualan > rata-rata semua produk
+WITH total_produk AS (
+    SELECT produk, SUM(total) AS total_penjualan
+    FROM penjualan
+    GROUP BY produk
+),
+rata_produk AS (
+    SELECT AVG(total_penjualan) AS rata_rata
+    FROM total_produk
+)
+SELECT *
+FROM total_produk
+WHERE total_penjualan > (SELECT rata_rata FROM rata_produk);
+
+Buat kolom kategori dari nilai penjualan:
+5 juta → "Laris"
+2–5 juta → "Sedang"
+< 2 juta → "Kurang"
+
+SELECT produk, total,
+CASE
+    WHEN total > 5000000 THEN 'Laris'
+    WHEN total >= 2000000 THEN 'Sedang'
+    ELSE 'Kurang'
+END AS kategori_penjualan
+FROM penjualan;
+
+mengkategorikan per produk 
+SELECT produk,
+SUM(total) AS total_penjualan,
+CASE
+    WHEN SUM(total) > 10000000 THEN 'Best Seller'
+    WHEN SUM(total) > 5000000 THEN 'Good'
+    ELSE 'Low'
+END AS kategori_produk
+FROM penjualan
+GROUP BY produk;
+
+👉 Urutkan prioritas kota:
+Bandung dulu → Jakarta → lainnya
+SELECT *
+FROM penjualan
+ORDER BY
+CASE
+    WHEN kota = 'Bandung' THEN 1
+    WHEN kota = 'Jakarta' THEN 2
+    ELSE 3
+END;
+
+👉 Tampilkan transaksi + kolom status_jumlah
+jumlah >= 5 → "Banyak"
+jumlah 2–4 → "Sedang"
+jumlah < 2 → "Sedikit
+
+SELECT produk, total,
+CASE
+    WHEN jumlah >= 5 THEN 'Banyak'
+    WHEN jumlah BETWEEN 2 AND 4 THEN 'Sedang'
+    WHEN jumlah < 2 THEN 'Sedikit'
+    ELSE 'Kurang'
+END AS kategori_penjualan
+FROM penjualan;
+
+
+SELECT kota,
+
+SUM(CASE WHEN jumlah >= 5 THEN total ELSE 0 END) AS omzet_banyak,
+SUM(CASE WHEN jumlah BETWEEN 2 AND 4 THEN total ELSE 0 END) AS omzet_sedang,
+SUM(CASE WHEN jumlah < 2 THEN total ELSE 0 END) AS omzet_sedikit
+
+FROM penjualan
+GROUP BY kota;
+
+🎯 Query lengkap CASE + COUNT + AVG
+SELECT 
+    kota,
+
+    -- total semua transaksi
+    COUNT(*) AS total_transaksi,
+
+    -- rata-rata jumlah semua transaksi
+    AVG(jumlah) AS rata_jumlah_barang,
+
+    -- =============================
+    -- COUNT berdasarkan kategori
+    -- =============================
+    SUM(CASE WHEN jumlah >= 5 THEN 1 ELSE 0 END) AS trx_banyak,
+    SUM(CASE WHEN jumlah BETWEEN 2 AND 4 THEN 1 ELSE 0 END) AS trx_sedang,
+    SUM(CASE WHEN jumlah < 2 THEN 1 ELSE 0 END) AS trx_sedikit,
+
+    -- =============================
+    -- AVG berdasarkan kategori
+    -- =============================
+    AVG(CASE WHEN jumlah >= 5 THEN jumlah END) AS avg_banyak,
+    AVG(CASE WHEN jumlah BETWEEN 2 AND 4 THEN jumlah END) AS avg_sedang,
+    AVG(CASE WHEN jumlah < 2 THEN jumlah END) AS avg_sedikit
+
+FROM penjualan
+GROUP BY kota;
+
+👉 SUM + CASE WHEN
+SELECT 
+    kota,
+
+    SUM(CASE WHEN produk = 'Laptop' THEN total ELSE 0 END) AS Laptop,
+    SUM(CASE WHEN produk = 'HP' THEN total ELSE 0 END) AS HP
+
+FROM penjualan
+GROUP BY kota;
+
+MySQL tidak punya keyword PIVOT, jadi kita pakai trik:
+SELECT 
+    kota,
+
+    SUM(CASE WHEN produk = 'Laptop' THEN total ELSE 0 END) AS Laptop,
+    SUM(CASE WHEN produk = 'HP' THEN total ELSE 0 END) AS HP
+
+FROM penjualan
+GROUP BY kota;
+
+Biasanya laporan butuh total per kota 👇
+SELECT 
+    kota,
+
+    SUM(total) AS total_kota,
+
+    SUM(CASE WHEN produk='Laptop' THEN total ELSE 0 END) AS Laptop,
+    SUM(CASE WHEN produk='HP' THEN total ELSE 0 END) AS HP
+
+FROM penjualan
+GROUP BY kota;
+
+Sekarang produk jadi baris, kota jadi kolom:
+SELECT 
+    produk,
+
+    SUM(CASE WHEN kota='Bandung' THEN total ELSE 0 END) AS Bandung,
+    SUM(CASE WHEN kota='Jakarta' THEN total ELSE 0 END) AS Jakarta,
+    SUM(CASE WHEN kota='Surabaya' THEN total ELSE 0 END) AS Surabaya
+
+FROM penjualan
+GROUP BY produk;
+
+
+-- =========================
+-- DATABASE PENJUALAN
+-- =========================
+
+-- Menampilkan semua data
+SELECT * FROM penjualan;
+
+-- Total penjualan per produk
+SELECT produk, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY produk;
+
+-- Total transaksi per kota
+SELECT kota, COUNT(*) AS jumlah_transaksi
+FROM penjualan
+GROUP BY kota;
+
+-- Produk terlaris per kota (Window Function)
+SELECT *
+FROM (
+    SELECT kota, produk, total,
+           ROW_NUMBER() OVER(PARTITION BY kota ORDER BY total DESC) AS ranking
+    FROM penjualan
+) AS sub
+WHERE ranking = 1;
