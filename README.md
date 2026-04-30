@@ -1,115 +1,71 @@
-# analisis-penjualan-excel
+📊 Sales Data Analysis Project
 
-This is my first Data Analyst project using Microsoft Excel.
+This repository contains my first end-to-end Data Analyst project using:
 
----
-
-## 📁 Dataset
-Dataset berisi data penjualan sederhana:
-- Tanggal
-- Produk
-- Kota
-- Jumlah
-- Harga
-- Total Penjualan
-
----
-
-## 🧮 Excel Formulas Used
-
-### 1. Menghitung Total Penjualan
-Rumus:
-```
-=Jumlah * Harga
-```
-
-Digunakan untuk menghitung total penjualan per transaksi.
-
----
-
-### 2. Menghitung Total Semua Penjualan
-Rumus:
-```
-=SUM(range)
-```
-
-Digunakan untuk menghitung total revenue.
-
----
-
-### 3. Menghitung Rata-rata Penjualan
-Rumus:
-```
-=AVERAGE(range)
-```
-
-Digunakan untuk mengetahui rata-rata transaksi.
-
----
-
-### 4. Menghitung Jumlah Transaksi
-Rumus:
-```
-=COUNT(range)
-```
-
-Digunakan untuk menghitung jumlah transaksi.
-
----
-
-### 5. Menentukan Nilai Terbesar & Terkecil
-Rumus:
-```
-=MAX(range)
-=MIN(range)
-```
-
-Digunakan untuk melihat transaksi tertinggi dan terendah.
-
----
-
-## 📊 Pivot Table Analysis
-
-Analisis yang dilakukan:
-- Total penjualan per Produk
-- Total penjualan per Kota
-- Total penjualan per Bulan
-
-Pivot Table digunakan untuk meringkas data dengan cepat.
-
----
-
-## 📈 Data Visualization
-Grafik dibuat menggunakan:
-- Column Chart
-- Pivot Chart
-
-Tujuan: mempermudah memahami data.
-
----
-
-## 💡 Business Insights
-- Produk terlaris: Laptop
-- Kota dengan penjualan tertinggi: Jakarta
-- Bulan dengan penjualan tertinggi: Januari
-
----
-
-
-````markdown #
-📊 Sales Analysis with Excel This is my first Data Analyst project using Microsoft Excel. --- ##
-📁 Dataset Dataset berisi data penjualan sederhana: - Tanggal - Produk - Kota - Jumlah - Harga - Total Penjualan --- ##
-🧮 Excel Formulas Used ###
-1. Menghitung Total Penjualan Rumus: ``` =Jumlah * Harga ``` Digunakan untuk menghitung total penjualan per transaksi. --- ###
-2. Menghitung Total Semua Penjualan Rumus: ``` =SUM(range) ``` Digunakan untuk menghitung total revenue. --- ###
-3. Menghitung Rata-rata Penjualan Rumus: ``` =AVERAGE(range) ``` Digunakan untuk mengetahui rata-rata transaksi. --- ###
-4. Menghitung Jumlah Transaksi Rumus: ``` =COUNT(range) ``` Digunakan untuk menghitung jumlah transaksi. --- ###
-5. Menentukan Nilai Terbesar & Terkecil Rumus: ``` =MAX(range) =MIN(range) ``` Digunakan untuk melihat transaksi tertinggi dan terendah. --- ##
-📊 Pivot Table Analysis Analisis yang dilakukan: - Total penjualan per Produk - Total penjualan per Kota - Total penjualan per Bulan Pivot Table digunakan untuk meringkas data dengan cepat. --- ##
-📈 Data Visualization Grafik dibuat menggunakan: - Column Chart - Pivot Chart Tujuan: mempermudah memahami data. --- ##
-💡 Business Insights - Produk terlaris: Laptop - Kota dengan penjualan tertinggi: Jakarta - Bulan dengan penjualan tertinggi: Januari --- ## 🛠 Tools Microsoft Excel ````
-# 📊 Sales Analysis with Excel
-
-
-## 🛠 Tools
 Microsoft Excel
+MySQL
+Python (Pandas & Matplotlib)
+
+Project ini mensimulasikan analisis data penjualan sederhana dari proses data → SQL → Python → Visualisasi.
+
+📁 Project Structure
+File	Description
+analisis_penjualan.xlsx	Raw dataset & Excel analysis
+sql_analysis.sql	SQL queries for data analysis
+analysis_python.py	Python script for analysis & visualization
+🧾 Dataset Information
+
+Dataset berisi data penjualan sederhana:
+
+Tanggal
+Produk
+Kota
+Jumlah
+Harga
+Total Penjualan
+📌 Excel Analysis
+
+Analisis yang dilakukan di Excel:
+
+Total Penjualan → =Jumlah * Harga
+Total Revenue → =SUM(Total)
+Average Sales → =AVERAGE(Total)
+Pivot Table Dashboard
+Sales Chart Visualization
+🗄️ SQL Analysis
+
+Analisis menggunakan MySQL:
+
+SELECT & WHERE filtering
+GROUP BY & HAVING
+JOIN antar tabel
+Window Functions (RANK, ROW_NUMBER)
+Pivot Table SQL
+Subquery & CTE
+
+Contoh query:
+
+SELECT produk, SUM(total) AS total_penjualan
+FROM penjualan
+GROUP BY produk;
+🐍 Python Analysis
+
+Python digunakan untuk:
+
+Mengambil data dari MySQL
+Analisis menggunakan Pandas
+Visualisasi grafik dengan Matplotlib
+
+Contoh:
+
+df.groupby("produk")["total"].sum()
+🎯 Project Goal
+
+Tujuan project ini:
+
+Melatih skill Data Analyst end-to-end
+Menggabungkan Excel + SQL + Python
+Membuat portfolio pertama
+👨‍💻 Author
+
+First Data Analyst Portfolio Project 🚀
